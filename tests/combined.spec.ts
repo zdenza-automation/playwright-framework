@@ -2,7 +2,7 @@ import { test } from '../fixtures/testFixture';
 import { expect } from '@playwright/test';
 import { testData } from '../config/testData';
 
-test('API data matches UI logic', async ({ homePage, userService }) => {
+test('API data matches UI logic @regression @ui @api', async ({ homePage, userService }) => {
   const users = await userService.getUsers();
 
   await homePage.navigate();

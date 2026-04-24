@@ -2,7 +2,7 @@ import { test } from '../fixtures/testFixture';
 import { expect } from '@playwright/test';
 import { testData } from '../config/testData';
 
-test('home page loads correctly', async ({ homePage }) => {
+test('home page loads correctly @smoke @ui', async ({ homePage }) => {
   await homePage.navigate();
   const title = await homePage.getTitle();
 
