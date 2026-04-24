@@ -15,18 +15,36 @@ export default defineConfig({
   },
 
   projects: [
-    {
-      name: 'setup',
-      testMatch: /auth\.setup\.ts/,
+  {
+    name: 'setup',
+    testMatch: /auth\.setup\.ts/,
+  },
+
+  {
+  name: 'admin',
+  dependencies: ['setup'],
+  use: {
+    storageState: 'auth/admin.json',
+  },
+  testIgnore: ['tests/api/**'], // THIS IS KEY
+},
+
+  {
+    name: 'user',
+    dependencies: ['setup'],
+    use: {
+      storageState: 'auth/user.json',
     },
-    {
-      name: 'tests',
-      dependencies: ['setup'],
-      use: {
-        storageState: 'storageState.json',
-      },
-    },
-  ],
+  },
+
+  {
+  name: 'api',
+  use: {
+    storageState: undefined, // NO AUTH
+  },
+  testMatch: ['tests/api/**'],
+},
+],
 
   reporter: [['html'], ['list']],
 });

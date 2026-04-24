@@ -1,14 +1,21 @@
 import { test as setup } from '@playwright/test';
 
-setup('authenticate', async ({ page }) => {
-  await page.goto('https://example.com');
+setup('authenticate admin', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
 
-  // 👉 Simulate login (replace later with real login)
-  // Example:
-  // await page.fill('#username', 'user');
-  // await page.fill('#password', 'pass');
-  // await page.click('button[type=submit]');
+  await page.fill('[data-test="username"]', 'standard_user');
+  await page.fill('[data-test="password"]', 'secret_sauce');
+  await page.click('[data-test="login-button"]');
 
-  // Save session
-  await page.context().storageState({ path: 'storageState.json' });
+  await page.context().storageState({ path: 'auth/admin.json' });
+});
+
+setup('authenticate user', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+
+  await page.fill('[data-test="username"]', 'problem_user');
+  await page.fill('[data-test="password"]', 'secret_sauce');
+  await page.click('[data-test="login-button"]');
+
+  await page.context().storageState({ path: 'auth/user.json' });
 });

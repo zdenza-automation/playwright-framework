@@ -1,18 +1,40 @@
-import { test as base } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
-import { UserService } from '../services/UserService';
+import { test as base, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
+import { InventoryPage } from '../pages/InventoryPage';
+import { ServiceManager } from '../services/ServiceManager';
+import { usersMock } from '../mocks/userMocks';
 
 type Fixtures = {
-  homePage: HomePage;
-  userService: UserService;
+  loginPage: LoginPage;
+  inventoryPage: InventoryPage;
+  services: ServiceManager;
+  mockUsersApi: void;
 };
 
 export const test = base.extend<Fixtures>({
-  homePage: async ({ page }, use) => {
-    await use(new HomePage(page));
+  loginPage: async ({ page }, use) => {
+    await use(new LoginPage(page));
   },
 
-  userService: async ({ request }, use) => {
-    await use(new UserService(request));
+  inventoryPage: async ({ page }, use) => {
+    await use(new InventoryPage(page));
+  },
+
+  services: async ({ request }, use) => {
+    await use(new ServiceManager(request));
+  },
+
+  mockUsersApi: async ({ page }, use) => {
+    await page.route('**/api/users', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(usersMock),
+      });
+    });
+
+    await use();
   },
 });
+
+export { expect };
